@@ -20,3 +20,9 @@ At that time, there's no features available since this projet just get started !
 -   [ ] :point_up_2:Add a custom pop-up
 -   [ ] 🤫Add a special custom timer
 -   [ ] 🖥️Register the custom timer to keep it when you go back on the site
+
+## Agreements on contributing
+
+If you want to contribute to the projet, please follow those standards :
+
+-   Constants uses only uppercase letters with the snake_case format
