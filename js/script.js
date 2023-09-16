@@ -80,5 +80,5 @@ PLAY_PAUSE_BUTTON.addEventListener("click", () => {
     TIMER_DISPLAY.textContent = timeFormatting(workDuration, seconds);
     PLAY_PAUSE_BUTTON.toggleAttribute("button_active");
     PLAY_PAUSE_BUTTON.classList.toggle("fa-play");
-    PLAY_PAUSE_BUTTON.classList.toggle("fa-pause");
+    PLAY_PAUSE_BUTTON.classList.toggle("fa-arrow-rotate-left");
 });

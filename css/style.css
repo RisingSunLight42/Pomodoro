@@ -1,0 +1,68 @@
+html {
+    background-color: rgba(106, 59, 161, 0.808);
+}
+
+.flexColumnDisplay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timerPanel {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    border: solid 5px rgb(51, 9, 99);
+    border-radius: 50vw;
+    width: 40vw;
+    height: 40vw;
+    /* To avoid oversized circle, we limit the size with the height, since the width usually grow faster than height. */
+    max-width: 50vh;
+    max-height: 50vh;
+    justify-content: space-evenly;
+}
+
+h1 {
+    margin: 10px 0 100px 0;
+    text-align: center;
+    font-size: 6em;
+}
+
+#timerDisplay {
+    text-align: center;
+    font-size: 8em;
+    margin: 25px;
+}
+
+#timerButton::before {
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 1024px) {
+    #timerDisplay {
+        text-align: center;
+        font-size: 6.5em;
+    }
+
+    .timerPanel {
+        width: 60vw;
+        height: 60vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 4em;
+    }
+
+    #timerDisplay {
+        text-align: center;
+        font-size: 4em;
+    }
+
+    .timerPanel {
+        width: 70vw;
+        height: 70vw;
+    }
+}
