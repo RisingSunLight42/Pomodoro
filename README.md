@@ -8,9 +8,10 @@ At that time, there's no features available since this projet just get started !
 
 ### V1
 
--   [ ] ⏲️Add the classical pomodoro timer, with 25 minutes of work and 5 minutes of break.
--   [ ] ⏯️Add a starting button, to get to work efficiently !
--   [ ] 🏃When the time is running, add a button to reset to the beginning state.
+-   [x] ⏲️Add the classical pomodoro timer, with 25 minutes of work and 5 minutes of break.
+-   [x] ⏯️Add a starting button, to get to work efficiently !
+-   [x] 🏃When the time is running, add a button to reset to the beginning state.
+-   [ ] 🪪Add style and visual identification for the work cycle and break cycle.
 
 ### V2
 
