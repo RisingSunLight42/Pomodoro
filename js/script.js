@@ -2,15 +2,16 @@
 const PLAY_PAUSE_BUTTON = document.getElementById("timerButton");
 const TIMER_DISPLAY = document.getElementById("timerDisplay");
 const TIMER_STATUS = document.getElementById("timerStatus");
+const WORKTIME_INPUT = document.getElementById("workTime");
+const BREAKTIME_INPUT = document.getElementById("breakTime");
 let workMinutesDuration = 25,
     workSecondsDuration = 0,
     breakMinutesDuration = 5,
     breakSecondsDuration = 0,
+    minutesElapsed = workMinutesDuration,
     secondsElapsed = 0,
     isInBreak = false,
-    intervalId = 0,
-    workCurrentMinutes = workMinutesDuration,
-    breakCurrentMinutes = breakMinutesDuration;
+    intervalId = 0;
 
 /**
  *  Function to format the numbers given into a proper time representation. Handle the case where the minutes given are higher than 59 to display hours.
@@ -20,7 +21,8 @@ let workMinutesDuration = 25,
  */
 const timeFormatting = (minutes, seconds) => {
     const HOURS_FORMATTED = minutes >= 59 ? `${Math.floor(minutes / 60)}:` : "";
-    const MINUTES_FORMATTED = minutes < 10 ? `0${minutes}` : minutes % 60;
+    minutes = minutes % 60;
+    const MINUTES_FORMATTED = minutes < 10 ? `0${minutes}` : minutes;
     const SECONDS_FORMATTED = seconds < 10 ? `0${seconds}` : seconds;
     return `${HOURS_FORMATTED}${MINUTES_FORMATTED}:${SECONDS_FORMATTED}`;
 };
@@ -30,8 +32,13 @@ const timeFormatting = (minutes, seconds) => {
  * @returns the interval id created by the method setInterval
  */
 const timerStart = () => {
-    workCurrentMinutes = workMinutesDuration - 1;
-    secondsElapsed = workSecondsDuration === 0 ? 59 : workSecondsDuration - 1;
+    if (workSecondsDuration === 0) {
+        minutesElapsed = workMinutesDuration - 1;
+        secondsElapsed = 59;
+    } else {
+        minutesElapsed = workMinutesDuration;
+        secondsElapsed = workSecondsDuration - 1;
+    }
     isInBreak = false;
     TIMER_STATUS.textContent = "TRAVAIL";
     TIMER_STATUS.classList = "workActive";
@@ -44,8 +51,7 @@ const timerStart = () => {
  * @returns 0
  */
 const timerReset = (intervalId) => {
-    workCurrentMinutes = workMinutesDuration;
-    breakCurrentMinutes = breakMinutesDuration;
+    minutesElapsed = workMinutesDuration;
     secondsElapsed = workSecondsDuration;
     isInBreak = false;
     TIMER_STATUS.textContent = "En attente de lancement...";
@@ -59,36 +65,84 @@ const timerReset = (intervalId) => {
  */
 const countdown = () => {
     secondsElapsed--;
-    TIMER_DISPLAY.textContent = timeFormatting(
-        isInBreak ? breakCurrentMinutes : workCurrentMinutes,
-        secondsElapsed
-    );
+    TIMER_DISPLAY.textContent = timeFormatting(minutesElapsed, secondsElapsed);
     if (secondsElapsed === 0) {
         secondsElapsed = 60;
-        if (workCurrentMinutes === 0) {
+        if (minutesElapsed === 0 && !isInBreak) {
             TIMER_STATUS.textContent = "PAUSE";
             TIMER_STATUS.classList = "breakActive";
             isInBreak = true;
-            breakCurrentMinutes = breakMinutesDuration;
+            minutesElapsed = breakMinutesDuration;
             secondsElapsed =
                 breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
-        } else if (breakCurrentMinutes === 0) {
+            if (secondsElapsed != 60) return;
+        } else if (minutesElapsed === 0 && isInBreak) {
             TIMER_STATUS.textContent = "TRAVAIL";
             TIMER_STATUS.classList = "workActive";
             isInBreak = false;
-            workCurrentMinutes = workMinutesDuration;
+            minutesElapsed = workMinutesDuration;
             secondsElapsed =
                 workSecondsDuration === 0 ? 60 : workSecondsDuration;
+            if (secondsElapsed != 60) return;
         }
-        isInBreak ? breakCurrentMinutes-- : workCurrentMinutes--;
+        minutesElapsed--;
     }
 };
 
+/**
+ *  Block invalid inputs by replacing the edited input with its previous value and displaying a warning message.
+ * @param {Event} event - Event given by the listener
+ * @param {string} inputType - only "work" or "break" are accepted value
+ */
+const invalidInputHandler = (event, inputType) => {
+    const target = event.target;
+    const correctedFormat =
+        inputType === "work"
+            ? timeFormatting(workMinutesDuration, workSecondsDuration)
+            : timeFormatting(breakMinutesDuration, breakSecondsDuration);
+    target.value = correctedFormat;
+    target.setCustomValidity(
+        "Le format ou la valeur entrée est incorrect ! La durée entrée doit se situer entre 1:00 et 60:00 et respecter le format MM:SS."
+    );
+    target.reportValidity();
+};
+
+/**
+ * Handle the user input and call the invalidInputHandler method to block invalid inputs.
+ * @param {Event} event - Event given by the listener
+ * @param {string} inputType - only "work" or "break" are accepted value
+ */
+const inputHandler = (event, inputType) => {
+    const input = event.target.value;
+    const timeInputRegex = /(^[0-5]?[1-9]|^60):[0-5]\d{1}/gm;
+    const regexResult = timeInputRegex.test(input);
+    if (!regexResult) return invalidInputHandler(event, inputType);
+    if (inputType === "work") {
+        [workMinutesDuration, workSecondsDuration] = input
+            .split(":")
+            .map(Number);
+        TIMER_DISPLAY.textContent = timeFormatting(
+            workMinutesDuration,
+            workSecondsDuration
+        );
+    } else {
+        [breakMinutesDuration, breakSecondsDuration] = input
+            .split(":")
+            .map(Number);
+    }
+    event.target.setCustomValidity("");
+    event.target.reportValidity();
+};
+
 window.onload = () => {
-    console.log(workMinutesDuration);
     TIMER_DISPLAY.textContent = timeFormatting(
         workMinutesDuration,
-        secondsElapsed
+        workSecondsDuration
+    );
+    WORKTIME_INPUT.value = TIMER_DISPLAY.textContent;
+    BREAKTIME_INPUT.value = timeFormatting(
+        breakMinutesDuration,
+        breakSecondsDuration
     );
 };
 
@@ -98,11 +152,15 @@ PLAY_PAUSE_BUTTON.addEventListener("click", () => {
         ? timerReset(intervalId)
         : timerStart();
     // The lines bellow are needed in both timerStart and timerReset
-    TIMER_DISPLAY.textContent = timeFormatting(
-        workCurrentMinutes,
-        secondsElapsed
-    );
+    TIMER_DISPLAY.textContent = timeFormatting(minutesElapsed, secondsElapsed);
     PLAY_PAUSE_BUTTON.toggleAttribute("button_active");
     PLAY_PAUSE_BUTTON.classList.toggle("fa-play");
     PLAY_PAUSE_BUTTON.classList.toggle("fa-arrow-rotate-left");
 });
+
+WORKTIME_INPUT.addEventListener("change", (event) =>
+    inputHandler(event, "work")
+);
+BREAKTIME_INPUT.addEventListener("change", (event) =>
+    inputHandler(event, "break")
+);

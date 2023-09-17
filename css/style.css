@@ -23,7 +23,7 @@ html {
 }
 
 h1 {
-    margin: 10px 0 100px 0;
+    margin: 10px 0 50px 0;
     text-align: center;
     font-size: 6em;
 }
@@ -37,7 +37,7 @@ h1 {
     width: 50%;
     max-width: 600px;
     height: 5vw;
-    max-height: 10vh;
+    max-height: 6vh;
     align-items: center;
     justify-content: center;
 }
@@ -51,6 +51,33 @@ h1 {
 #timerButton::before {
     display: flex;
     justify-content: center;
+}
+
+#inputSection {
+    margin-top: 25px;
+    width: 100%;
+}
+
+#inputSection div {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 5px;
+}
+
+#inputSection div label {
+    align-self: center;
+    display: inline-block;
+    width: 20%;
+    font-size: 4em;
+}
+
+#inputSection div input {
+    display: inline-block;
+    width: 20%;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 1.5em;
 }
 
 @media screen and (max-width: 1024px) {
@@ -68,6 +95,12 @@ h1 {
     .timerPanel {
         width: 60vw;
         height: 60vw;
+    }
+
+    #inputSection div label {
+        font-size: 3em;
+        display: inline-block;
+        width: 25%;
     }
 }
 
@@ -87,7 +120,6 @@ h1 {
     }
 
     h1 {
-        margin: 10px 0 50px 0;
         font-size: 4em;
     }
 
@@ -99,5 +131,11 @@ h1 {
     .timerPanel {
         width: 70vw;
         height: 70vw;
+    }
+
+    #inputSection div label {
+        font-size: 1.5em;
+        display: inline-block;
+        width: 25%;
     }
 }

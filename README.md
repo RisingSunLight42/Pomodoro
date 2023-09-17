@@ -15,10 +15,10 @@ At that time, there's no features available since this projet just get started !
 
 ### V2
 
--   [ ] 📝Add a way to custom the timer, for the workaholics !
+-   [x] 📝Add a way to custom the timer, for the workaholics !
 -   [ ] ✨Add fancy animations
 -   [ ] :loud_sound:Play a sound when we switch from work to rest, and another one for rest to work.
--   [ ] :point_up_2:Add a custom pop-up
+-   [x] :point_up_2:Add a custom pop-up
 -   [ ] 🤫Add a special custom timer
 -   [ ] 🖥️Register the custom timer to keep it when you go back on the site
 
