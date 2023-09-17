@@ -5,6 +5,7 @@ const TIMER_STATUS = document.getElementById("timerStatus");
 const WORKTIME_INPUT = document.getElementById("workTime");
 const BREAKTIME_INPUT = document.getElementById("breakTime");
 const TITLE = document.getElementsByTagName("title")[0];
+const ALARM = new Audio("/audio/alarm.mp3");
 let workMinutesDuration = 25,
     workSecondsDuration = 0,
     breakMinutesDuration = 5,
@@ -42,7 +43,7 @@ const timerStart = () => {
         secondsElapsed = workSecondsDuration - 1;
     }
     isInBreak = false;
-    TIMER_STATUS.textContent = "TRAVAIL";
+    TIMER_STATUS.textContent = "WORK";
     TIMER_STATUS.classList = "workActive";
     TITLE.textContent = `${timeFormatting(
         minutesElapsed,
@@ -60,7 +61,7 @@ const timerReset = (intervalId) => {
     minutesElapsed = workMinutesDuration;
     secondsElapsed = workSecondsDuration;
     isInBreak = false;
-    TIMER_STATUS.textContent = "En attente de lancement...";
+    TIMER_STATUS.textContent = "Waiting for the launch...";
     TITLE.textContent = "Pomodoro";
     TIMER_STATUS.classList = "";
     clearInterval(intervalId);
@@ -77,20 +78,22 @@ const countdown = () => {
     if (secondsElapsed === 0) {
         secondsElapsed = 60;
         if (minutesElapsed === 0 && !isInBreak) {
-            TIMER_STATUS.textContent = "PAUSE";
+            TIMER_STATUS.textContent = "BREAK";
             TIMER_STATUS.classList = "breakActive";
             isInBreak = true;
             minutesElapsed = breakMinutesDuration;
             secondsElapsed =
                 breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
+            ALARM.play();
             if (secondsElapsed != 60) return;
         } else if (minutesElapsed === 0 && isInBreak) {
-            TIMER_STATUS.textContent = "TRAVAIL";
+            TIMER_STATUS.textContent = "WORK";
             TIMER_STATUS.classList = "workActive";
             isInBreak = false;
             minutesElapsed = workMinutesDuration;
             secondsElapsed =
                 workSecondsDuration === 0 ? 60 : workSecondsDuration;
+            ALARM.play();
             if (secondsElapsed != 60) return;
         }
         minutesElapsed--;
