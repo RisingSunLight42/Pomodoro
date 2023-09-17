@@ -2,7 +2,7 @@
 
 ## Features available
 
-At that time, there's no features available since this projet just get started ! Check our TODO list to discover what will be done.
+At that time, the V1 is officially done ! We're currently working on V2, check our TODO list to discover what will be done.
 
 ## TODO List
 
