@@ -106,16 +106,16 @@ const countdown = () => {
  * @param {string} inputType - only "work" or "break" are accepted value
  */
 const invalidInputHandler = (event, inputType) => {
-    const target = event.target;
-    const correctedFormat =
+    const TARGER = event.target;
+    const CORRECTED_FORMAT =
         inputType === "work"
             ? timeFormatting(workMinutesDuration, workSecondsDuration)
             : timeFormatting(breakMinutesDuration, breakSecondsDuration);
-    target.value = correctedFormat;
-    target.setCustomValidity(
+    TARGER.value = CORRECTED_FORMAT;
+    TARGER.setCustomValidity(
         "Le format ou la valeur entrée est incorrect ! La durée entrée doit se situer entre 1:00 et 60:00 et respecter le format MM:SS."
     );
-    target.reportValidity();
+    TARGER.reportValidity();
 };
 
 /**
@@ -124,24 +124,22 @@ const invalidInputHandler = (event, inputType) => {
  * @param {string} inputType - only "work" or "break" are accepted value
  */
 const inputHandler = (event, inputType) => {
-    const input = event.target.value;
-    const timeInputRegex = /(^[0-5]?[1-9]|^60):[0-5]\d{1}/gm;
-    const regexResult = timeInputRegex.test(input);
-    if (!regexResult) return invalidInputHandler(event, inputType);
+    const INPUT = event.target.value;
+    const TIME_INPUT_REGEX = /(^[0-5]?[1-9]|^60):[0-5]\d{1}/gm;
+    const REGEX_RESULT = TIME_INPUT_REGEX.test(INPUT);
+    if (!REGEX_RESULT) return invalidInputHandler(event, inputType);
     if (inputType === "work") {
-        localStorage.setItem("workTimer", input);
-        [workMinutesDuration, workSecondsDuration] = input
-            .split(":")
-            .map(Number);
+        localStorage.setItem("workTimer", INPUT);
+        [workMinutesDuration, workSecondsDuration] =
+            INPUT.split(":").map(Number);
         TIMER_DISPLAY.textContent = timeFormatting(
             workMinutesDuration,
             workSecondsDuration
         );
     } else {
-        localStorage.setItem("breakTimer", input);
-        [breakMinutesDuration, breakSecondsDuration] = input
-            .split(":")
-            .map(Number);
+        localStorage.setItem("breakTimer", INPUT);
+        [breakMinutesDuration, breakSecondsDuration] =
+            INPUT.split(":").map(Number);
     }
     event.target.setCustomValidity("");
     event.target.reportValidity();
@@ -151,16 +149,14 @@ const inputHandler = (event, inputType) => {
  * Function to load custom timers if they exist in the localStorage.
  */
 const loadStorage = () => {
-    const workTimer = localStorage.getItem("workTimer");
-    const breakTimer = localStorage.getItem("breakTimer");
-    if (workTimer)
-        [workMinutesDuration, workSecondsDuration] = workTimer
-            .split(":")
-            .map(Number);
-    if (breakTimer)
-        [breakMinutesDuration, breakSecondsDuration] = breakTimer
-            .split(":")
-            .map(Number);
+    const WORK_TIMER = localStorage.getItem("workTimer");
+    const BREAK_TIMER = localStorage.getItem("breakTimer");
+    if (WORK_TIMER)
+        [workMinutesDuration, workSecondsDuration] =
+            WORK_TIMER.split(":").map(Number);
+    if (BREAK_TIMER)
+        [breakMinutesDuration, breakSecondsDuration] =
+            BREAK_TIMER.split(":").map(Number);
 };
 
 /**
