@@ -19,7 +19,7 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 -   [ ] ✨Add fancy animations
 -   [ ] :loud_sound:Play a sound when we switch from work to rest, and another one for rest to work.
 -   [x] :point_up_2:Add a custom pop-up
--   [ ] 🤫Add a special custom timer
+-   [x] 🤫Add a special custom timer
 -   [x] 🖥️Register the custom timer to keep it when you go back on the site
 -   [x] 🖌️Add a custom favicon
 -   [x] ⌛Add the timer on the tab name

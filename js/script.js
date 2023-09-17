@@ -12,7 +12,8 @@ let workMinutesDuration = 25,
     minutesElapsed = workMinutesDuration,
     secondsElapsed = 0,
     isInBreak = false,
-    intervalId = 0;
+    intervalId = 0,
+    userClick = 0;
 
 /**
  *  Function to format the numbers given into a proper time representation. Handle the case where the minutes given are higher than 59 to display hours.
@@ -159,6 +160,31 @@ const loadStorage = () => {
             .map(Number);
 };
 
+/**
+ * Just a dumb function to enable 42:42 timers when you click 42 times on the play/stop button
+ */
+const easterEgg = () => {
+    userClick++;
+    if (userClick != 42) return;
+    workMinutesDuration =
+        workSecondsDuration =
+        breakMinutesDuration =
+        breakSecondsDuration =
+            42;
+    TIMER_DISPLAY.textContent = timeFormatting(
+        workMinutesDuration,
+        workSecondsDuration
+    );
+    WORKTIME_INPUT.value = TIMER_DISPLAY.textContent;
+    BREAKTIME_INPUT.value = TIMER_DISPLAY.textContent;
+    localStorage.setItem("workTimer", "42:42");
+    localStorage.setItem("breakTimer", "42:42");
+};
+
+/**
+ * Function used to display default value for the user in the timer display and in the inputs.
+ * The values displayed may be not the defaults ones if the user already personnalized their timers.
+ */
 window.onload = () => {
     loadStorage();
     TIMER_DISPLAY.textContent = timeFormatting(
@@ -182,6 +208,7 @@ PLAY_PAUSE_BUTTON.addEventListener("click", () => {
     PLAY_PAUSE_BUTTON.toggleAttribute("button_active");
     PLAY_PAUSE_BUTTON.classList.toggle("fa-play");
     PLAY_PAUSE_BUTTON.classList.toggle("fa-arrow-rotate-left");
+    easterEgg();
 });
 
 WORKTIME_INPUT.addEventListener("change", (event) =>
