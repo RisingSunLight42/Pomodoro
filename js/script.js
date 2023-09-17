@@ -1,6 +1,7 @@
 // Main variables declaration
 const PLAY_PAUSE_BUTTON = document.getElementById("timerButton");
 const TIMER_DISPLAY = document.getElementById("timerDisplay");
+const TIMER_STATUS = document.getElementById("timerStatus");
 let workDuration = 25,
     breakDuration = 5,
     seconds = 0,
@@ -28,6 +29,8 @@ const timerStart = () => {
     workDuration = 24;
     seconds = 59;
     isInBreak = false;
+    TIMER_STATUS.textContent = "TRAVAIL";
+    TIMER_STATUS.classList = "workActive";
     return setInterval(countdown, 1000);
 };
 
@@ -41,6 +44,8 @@ const timerReset = (intervalId) => {
     breakDuration = 5;
     seconds = 0;
     isInBreak = false;
+    TIMER_STATUS.textContent = "En attente de lancement...";
+    TIMER_STATUS.classList = "";
     clearInterval(intervalId);
     return 0;
 };
@@ -57,9 +62,13 @@ const countdown = () => {
     if (seconds === 0) {
         seconds = 60;
         if (workDuration === 0) {
+            TIMER_STATUS.textContent = "PAUSE";
+            TIMER_STATUS.classList = "breakActive";
             isInBreak = true;
             breakDuration = 5;
         } else if (breakDuration === 0) {
+            TIMER_STATUS.textContent = "TRAVAIL";
+            TIMER_STATUS.classList = "workActive";
             isInBreak = false;
             workDuration = 25;
         }

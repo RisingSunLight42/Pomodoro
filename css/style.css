@@ -28,6 +28,20 @@ h1 {
     font-size: 6em;
 }
 
+#timerStatus {
+    font-size: 2em;
+    display: flex;
+    margin: 10px 0 20px 0;
+    border: solid 5px rgb(51, 9, 99);
+    border-radius: 50vw;
+    width: 50%;
+    max-width: 600px;
+    height: 5vw;
+    max-height: 10vh;
+    align-items: center;
+    justify-content: center;
+}
+
 #timerDisplay {
     text-align: center;
     font-size: 8em;
@@ -40,6 +54,12 @@ h1 {
 }
 
 @media screen and (max-width: 1024px) {
+    #timerStatus {
+        font-size: 2.5em;
+        width: 75%;
+        height: 15vw;
+    }
+
     #timerDisplay {
         text-align: center;
         font-size: 6.5em;
@@ -51,8 +71,23 @@ h1 {
     }
 }
 
+.workActive {
+    background-color: rgb(187, 76, 76);
+}
+
+.breakActive {
+    background-color: rgb(104, 165, 69);
+}
+
 @media screen and (max-width: 768px) {
+    #timerStatus {
+        font-size: 1.5em;
+        width: 75%;
+        height: 15vw;
+    }
+
     h1 {
+        margin: 10px 0 50px 0;
         font-size: 4em;
     }
 
