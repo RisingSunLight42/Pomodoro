@@ -20,7 +20,7 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 -   [ ] :loud_sound:Play a sound when we switch from work to rest, and another one for rest to work.
 -   [x] :point_up_2:Add a custom pop-up
 -   [ ] 🤫Add a special custom timer
--   [ ] 🖥️Register the custom timer to keep it when you go back on the site
+-   [x] 🖥️Register the custom timer to keep it when you go back on the site
 
 ## Agreements on contributing
 

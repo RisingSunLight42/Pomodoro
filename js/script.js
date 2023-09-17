@@ -118,6 +118,7 @@ const inputHandler = (event, inputType) => {
     const regexResult = timeInputRegex.test(input);
     if (!regexResult) return invalidInputHandler(event, inputType);
     if (inputType === "work") {
+        localStorage.setItem("workTimer", input);
         [workMinutesDuration, workSecondsDuration] = input
             .split(":")
             .map(Number);
@@ -126,6 +127,7 @@ const inputHandler = (event, inputType) => {
             workSecondsDuration
         );
     } else {
+        localStorage.setItem("breakTimer", input);
         [breakMinutesDuration, breakSecondsDuration] = input
             .split(":")
             .map(Number);
@@ -134,7 +136,24 @@ const inputHandler = (event, inputType) => {
     event.target.reportValidity();
 };
 
+/**
+ * Function to load custom timers if they exist in the localStorage.
+ */
+const loadStorage = () => {
+    const workTimer = localStorage.getItem("workTimer");
+    const breakTimer = localStorage.getItem("breakTimer");
+    if (workTimer)
+        [workMinutesDuration, workSecondsDuration] = workTimer
+            .split(":")
+            .map(Number);
+    if (breakTimer)
+        [breakMinutesDuration, breakSecondsDuration] = breakTimer
+            .split(":")
+            .map(Number);
+};
+
 window.onload = () => {
+    loadStorage();
     TIMER_DISPLAY.textContent = timeFormatting(
         workMinutesDuration,
         workSecondsDuration
