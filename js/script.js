@@ -36,11 +36,12 @@ const timeFormatting = (minutes, seconds) => {
  */
 const timerStart = () => {
     if (workSecondsDuration === 0) {
-        minutesElapsed = workMinutesDuration - 1;
+        minutesElapsed = workMinutesDuration - (1 * workMinutesDuration != 0);
+        console.log(minutesElapsed);
         secondsElapsed = 59;
     } else {
         minutesElapsed = workMinutesDuration;
-        secondsElapsed = workSecondsDuration - 1;
+        secondsElapsed = workSecondsDuration - (1 * workSecondsDuration != 1);
     }
     isInBreak = false;
     TIMER_STATUS.textContent = "WORK";
@@ -113,7 +114,7 @@ const invalidInputHandler = (event, inputType) => {
             : timeFormatting(breakMinutesDuration, breakSecondsDuration);
     TARGER.value = CORRECTED_FORMAT;
     TARGER.setCustomValidity(
-        "Le format ou la valeur entrée est incorrect ! La durée entrée doit se situer entre 1:00 et 60:00 et respecter le format MM:SS."
+        "Le format ou la valeur entrée est incorrect ! La durée entrée doit se situer entre 00:01 et 60:00 et respecter le format MM:SS."
     );
     TARGER.reportValidity();
 };
@@ -125,9 +126,10 @@ const invalidInputHandler = (event, inputType) => {
  */
 const inputHandler = (event, inputType) => {
     const INPUT = event.target.value;
-    const TIME_INPUT_REGEX = /(^[0-5]?[1-9]|^60):[0-5]\d{1}/gm;
+    const TIME_INPUT_REGEX = /(^[0-5]?\d{1}|^60):[0-5]\d{1}/gm;
     const REGEX_RESULT = TIME_INPUT_REGEX.test(INPUT);
-    if (!REGEX_RESULT) return invalidInputHandler(event, inputType);
+    if (!REGEX_RESULT || INPUT === "0:00" || INPUT === "00:00")
+        return invalidInputHandler(event, inputType);
     if (inputType === "work") {
         localStorage.setItem("workTimer", INPUT);
         [workMinutesDuration, workSecondsDuration] =
