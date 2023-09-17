@@ -21,7 +21,7 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 -   [x] :point_up_2:Add a custom pop-up
 -   [ ] 🤫Add a special custom timer
 -   [x] 🖥️Register the custom timer to keep it when you go back on the site
--   [ ] 🖌️Add a custom favicon
+-   [x] 🖌️Add a custom favicon
 -   [x] ⌛Add the timer on the tab name
 
 ## Agreements on contributing
@@ -29,3 +29,8 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 If you want to contribute to the projet, please follow those standards :
 
 -   Constants uses only uppercase letters with the snake_case format
+
+## Credits
+
+The favicon used in this project is from the fa-tomato of Fontawesome.
+You can find the colored version by following this [link](https://github.com/FortAwesome/Font-Awesome/issues/1183).
