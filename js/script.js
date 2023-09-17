@@ -4,6 +4,7 @@ const TIMER_DISPLAY = document.getElementById("timerDisplay");
 const TIMER_STATUS = document.getElementById("timerStatus");
 const WORKTIME_INPUT = document.getElementById("workTime");
 const BREAKTIME_INPUT = document.getElementById("breakTime");
+const TITLE = document.getElementsByTagName("title")[0];
 let workMinutesDuration = 25,
     workSecondsDuration = 0,
     breakMinutesDuration = 5,
@@ -42,6 +43,10 @@ const timerStart = () => {
     isInBreak = false;
     TIMER_STATUS.textContent = "TRAVAIL";
     TIMER_STATUS.classList = "workActive";
+    TITLE.textContent = `${timeFormatting(
+        minutesElapsed,
+        secondsElapsed
+    )} | Pomodoro`;
     return setInterval(countdown, 1000);
 };
 
@@ -55,6 +60,7 @@ const timerReset = (intervalId) => {
     secondsElapsed = workSecondsDuration;
     isInBreak = false;
     TIMER_STATUS.textContent = "En attente de lancement...";
+    TITLE.textContent = "Pomodoro";
     TIMER_STATUS.classList = "";
     clearInterval(intervalId);
     return 0;
@@ -66,6 +72,7 @@ const timerReset = (intervalId) => {
 const countdown = () => {
     secondsElapsed--;
     TIMER_DISPLAY.textContent = timeFormatting(minutesElapsed, secondsElapsed);
+    TITLE.textContent = `${TIMER_DISPLAY.textContent} | Pomodoro`;
     if (secondsElapsed === 0) {
         secondsElapsed = 60;
         if (minutesElapsed === 0 && !isInBreak) {

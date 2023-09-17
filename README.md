@@ -22,7 +22,7 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 -   [ ] 🤫Add a special custom timer
 -   [x] 🖥️Register the custom timer to keep it when you go back on the site
 -   [ ] 🖌️Add a custom favicon
--   [ ] ⌛Add the timer on the tab name
+-   [x] ⌛Add the timer on the tab name
 
 ## Agreements on contributing
 
