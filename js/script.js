@@ -2,11 +2,15 @@
 const PLAY_PAUSE_BUTTON = document.getElementById("timerButton");
 const TIMER_DISPLAY = document.getElementById("timerDisplay");
 const TIMER_STATUS = document.getElementById("timerStatus");
-let workDuration = 25,
-    breakDuration = 5,
-    seconds = 0,
+let workMinutesDuration = 25,
+    workSecondsDuration = 0,
+    breakMinutesDuration = 5,
+    breakSecondsDuration = 0,
+    secondsElapsed = 0,
     isInBreak = false,
-    intervalId = 0;
+    intervalId = 0,
+    workCurrentMinutes = workMinutesDuration,
+    breakCurrentMinutes = breakMinutesDuration;
 
 /**
  *  Function to format the numbers given into a proper time representation. Handle the case where the minutes given are higher than 59 to display hours.
@@ -26,8 +30,8 @@ const timeFormatting = (minutes, seconds) => {
  * @returns the interval id created by the method setInterval
  */
 const timerStart = () => {
-    workDuration = 24;
-    seconds = 59;
+    workCurrentMinutes = workMinutesDuration - 1;
+    secondsElapsed = workSecondsDuration === 0 ? 59 : workSecondsDuration - 1;
     isInBreak = false;
     TIMER_STATUS.textContent = "TRAVAIL";
     TIMER_STATUS.classList = "workActive";
@@ -40,9 +44,9 @@ const timerStart = () => {
  * @returns 0
  */
 const timerReset = (intervalId) => {
-    workDuration = 25;
-    breakDuration = 5;
-    seconds = 0;
+    workCurrentMinutes = workMinutesDuration;
+    breakCurrentMinutes = breakMinutesDuration;
+    secondsElapsed = workSecondsDuration;
     isInBreak = false;
     TIMER_STATUS.textContent = "En attente de lancement...";
     TIMER_STATUS.classList = "";
@@ -54,30 +58,38 @@ const timerReset = (intervalId) => {
  * Function used to manipulate the timer. It descreases seconds and minutes and handle the switch between work and break cycle.
  */
 const countdown = () => {
-    seconds--;
+    secondsElapsed--;
     TIMER_DISPLAY.textContent = timeFormatting(
-        isInBreak ? breakDuration : workDuration,
-        seconds
+        isInBreak ? breakCurrentMinutes : workCurrentMinutes,
+        secondsElapsed
     );
-    if (seconds === 0) {
-        seconds = 60;
-        if (workDuration === 0) {
+    if (secondsElapsed === 0) {
+        secondsElapsed = 60;
+        if (workCurrentMinutes === 0) {
             TIMER_STATUS.textContent = "PAUSE";
             TIMER_STATUS.classList = "breakActive";
             isInBreak = true;
-            breakDuration = 5;
-        } else if (breakDuration === 0) {
+            breakCurrentMinutes = breakMinutesDuration;
+            secondsElapsed =
+                breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
+        } else if (breakCurrentMinutes === 0) {
             TIMER_STATUS.textContent = "TRAVAIL";
             TIMER_STATUS.classList = "workActive";
             isInBreak = false;
-            workDuration = 25;
+            workCurrentMinutes = workMinutesDuration;
+            secondsElapsed =
+                workSecondsDuration === 0 ? 60 : workSecondsDuration;
         }
-        isInBreak ? breakDuration-- : workDuration--;
+        isInBreak ? breakCurrentMinutes-- : workCurrentMinutes--;
     }
 };
 
 window.onload = () => {
-    TIMER_DISPLAY.textContent = timeFormatting(workDuration, seconds);
+    console.log(workMinutesDuration);
+    TIMER_DISPLAY.textContent = timeFormatting(
+        workMinutesDuration,
+        secondsElapsed
+    );
 };
 
 PLAY_PAUSE_BUTTON.addEventListener("click", () => {
@@ -86,7 +98,10 @@ PLAY_PAUSE_BUTTON.addEventListener("click", () => {
         ? timerReset(intervalId)
         : timerStart();
     // The lines bellow are needed in both timerStart and timerReset
-    TIMER_DISPLAY.textContent = timeFormatting(workDuration, seconds);
+    TIMER_DISPLAY.textContent = timeFormatting(
+        workCurrentMinutes,
+        secondsElapsed
+    );
     PLAY_PAUSE_BUTTON.toggleAttribute("button_active");
     PLAY_PAUSE_BUTTON.classList.toggle("fa-play");
     PLAY_PAUSE_BUTTON.classList.toggle("fa-arrow-rotate-left");
