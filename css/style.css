@@ -1,5 +1,9 @@
 :root {
     --main-color: rgb(51, 9, 99);
+    --rotation-timer: 360deg;
+    --work-active-color: rgb(187, 76, 76);
+    --break-active-color: rgb(104, 165, 69);
+    --rotation-timer-color: var(--work-active-color);
 }
 
 body,
@@ -92,6 +96,11 @@ html {
     max-width: 50vh;
     max-height: 50vh;
     justify-content: space-evenly;
+    transition: background 4s ease;
+    background: conic-gradient(
+        var(--rotation-timer-color) 0deg var(--rotation-timer),
+        white var(--rotation-timer) 360deg
+    );
 }
 
 h1 {
@@ -197,11 +206,11 @@ h1 {
 }
 
 .workActive {
-    background-color: rgb(187, 76, 76);
+    background-color: var(--work-active-color);
 }
 
 .breakActive {
-    background-color: rgb(104, 165, 69);
+    background-color: var(--break-active-color);
 }
 
 @media screen and (max-width: 768px) {

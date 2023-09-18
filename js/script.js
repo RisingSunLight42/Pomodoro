@@ -8,6 +8,13 @@ const AUDIO_INPUT = document.getElementById("audioInput");
 const TITLE = document.getElementsByTagName("title")[0];
 const ALARM = new Audio("./audio/alarm.mp3");
 const POP_UP_ERROR = document.getElementById("pop-up");
+const ROOT = document.documentElement;
+const WORK_ACTIVE_COLOR = getComputedStyle(ROOT).getPropertyValue(
+    "--work-active-color"
+);
+const BREAK_ACTIVE_COLOR = getComputedStyle(ROOT).getPropertyValue(
+    "--break-active-color"
+);
 let workMinutesDuration = 25,
     workSecondsDuration = 0,
     breakMinutesDuration = 5,
@@ -18,7 +25,9 @@ let workMinutesDuration = 25,
     audioEnabled = false,
     intervalId = 0,
     userClick = 0,
-    notificationEnabled = false;
+    notificationEnabled = false,
+    rotationTimerDegree = 360,
+    rotationReductionRatio = 0;
 
 if (
     typeof Notification !== "undefined" &&
@@ -38,6 +47,7 @@ if (
 const timeFormatting = (minutes, seconds) => {
     const HOURS_FORMATTED = minutes >= 59 ? `${Math.floor(minutes / 60)}:` : "";
     minutes = minutes % 60;
+    seconds = seconds % 60;
     const MINUTES_FORMATTED = minutes < 10 ? `0${minutes}` : minutes;
     const SECONDS_FORMATTED = seconds < 10 ? `0${seconds}` : seconds;
     return `${HOURS_FORMATTED}${MINUTES_FORMATTED}:${SECONDS_FORMATTED}`;
@@ -75,6 +85,11 @@ const timerStart = () => {
         minutesElapsed,
         secondsElapsed
     )} | Pomodoro`;
+    rotationReductionRatio =
+        360 / (workMinutesDuration * 60 + workSecondsDuration);
+    rotationTimerDegree -= rotationReductionRatio;
+    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
+    rotationTimerDegree -= rotationReductionRatio;
     return setInterval(countdown, 1000);
 };
 
@@ -87,6 +102,9 @@ const timerReset = (intervalId) => {
     minutesElapsed = workMinutesDuration;
     secondsElapsed = workSecondsDuration;
     isInBreak = false;
+    rotationTimerDegree = 360;
+    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
+    ROOT.style.setProperty("--rotation-timer-color", WORK_ACTIVE_COLOR);
     TIMER_STATUS.textContent = "Waiting for the launch...";
     TITLE.textContent = "Pomodoro";
     TIMER_STATUS.classList = "";
@@ -109,10 +127,12 @@ const triggerAnimation = (element, animation) => {
  * Function used to manipulate the timer. It descreases seconds and minutes and handle the switch between work and break cycle.
  */
 const countdown = () => {
+    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
+    rotationTimerDegree -= rotationReductionRatio;
     secondsElapsed--;
     TIMER_DISPLAY.textContent = timeFormatting(minutesElapsed, secondsElapsed);
     TITLE.textContent = `${TIMER_DISPLAY.textContent} | Pomodoro`;
-    if (secondsElapsed === 0) {
+    if (secondsElapsed % 60 === 0) {
         secondsElapsed = 60;
         if (minutesElapsed === 0 && !isInBreak) {
             TIMER_STATUS.textContent = "BREAK";
@@ -120,7 +140,18 @@ const countdown = () => {
             isInBreak = true;
             minutesElapsed = breakMinutesDuration;
             secondsElapsed =
-                breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
+                breakSecondsDuration === 0 ? 61 : breakSecondsDuration + 1;
+            rotationReductionRatio =
+                360 / (breakMinutesDuration * 60 + breakSecondsDuration);
+            rotationTimerDegree = 360;
+            ROOT.style.setProperty(
+                "--rotation-timer",
+                rotationTimerDegree + "deg"
+            );
+            ROOT.style.setProperty(
+                "--rotation-timer-color",
+                BREAK_ACTIVE_COLOR
+            );
             if (audioEnabled) ALARM.play();
             triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
             notificationEmitter(
@@ -134,7 +165,15 @@ const countdown = () => {
             isInBreak = false;
             minutesElapsed = workMinutesDuration;
             secondsElapsed =
-                workSecondsDuration === 0 ? 60 : workSecondsDuration;
+                workSecondsDuration === 0 ? 61 : workSecondsDuration + 1;
+            rotationReductionRatio =
+                360 / (workMinutesDuration * 60 + workSecondsDuration);
+            rotationTimerDegree = 360;
+            ROOT.style.setProperty(
+                "--rotation-timer",
+                rotationTimerDegree + "deg"
+            );
+            ROOT.style.setProperty("--rotation-timer-color", WORK_ACTIVE_COLOR);
             if (audioEnabled) ALARM.play();
             triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
             notificationEmitter(
