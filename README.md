@@ -24,6 +24,9 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 -   [x] 🖌️Add a custom favicon
 -   [x] ⌛Add the timer on the tab name
 -   [x] ⏰Add notification when the cycle is done
+-   [ ] 📳Add vibration on mobile
+-   [ ] 🎇Add a new pop-up for the custom timer
+-   [ ] ☯️Add dark mode
 
 ## Agreements on contributing
 
