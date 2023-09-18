@@ -53,6 +53,11 @@ const timeFormatting = (minutes, seconds) => {
     return `${HOURS_FORMATTED}${MINUTES_FORMATTED}:${SECONDS_FORMATTED}`;
 };
 
+/**
+ * Function to emit a browser notification. Automatically verify if the notifications are enabled.
+ * @param {string} title - the title of the notification
+ * @param {string} body - the main content of the notification
+ */
 const notificationEmitter = (title, body) => {
     if (document.visibilityState === "visible" && !notificationEnabled) return;
     const NOTIFICATION = new Notification(title, {
@@ -72,7 +77,6 @@ const notificationEmitter = (title, body) => {
 const timerStart = () => {
     if (workSecondsDuration === 0) {
         minutesElapsed = workMinutesDuration - (1 * workMinutesDuration != 0);
-        console.log(minutesElapsed);
         secondsElapsed = 59;
     } else {
         minutesElapsed = workMinutesDuration;
@@ -124,6 +128,28 @@ const triggerAnimation = (element, animation) => {
 };
 
 /**
+ * Function that execute several change triggering when the timer cycle is ended.
+ * The function contains mainly a lot of lines identical is both timers end
+ */
+const cycleEnded = () => {
+    isInBreak = !isInBreak;
+    rotationTimerDegree = 360;
+    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
+    ROOT.style.setProperty(
+        "--rotation-timer-color",
+        isInBreak ? BREAK_ACTIVE_COLOR : WORK_ACTIVE_COLOR
+    );
+    if (audioEnabled) ALARM.play();
+    triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
+    notificationEmitter(
+        isInBreak
+            ? ("Work cycle is ended", "It's break time ! Take a rest.")
+            : ("Break cycle is ended",
+              "It's work time ! Time to go back to your duties.")
+    );
+};
+
+/**
  * Function used to manipulate the timer. It descreases seconds and minutes and handle the switch between work and break cycle.
  */
 const countdown = () => {
@@ -137,52 +163,22 @@ const countdown = () => {
         if (minutesElapsed === 0 && !isInBreak) {
             TIMER_STATUS.textContent = "BREAK";
             TIMER_STATUS.classList = "breakActive";
-            isInBreak = true;
             minutesElapsed = breakMinutesDuration;
             secondsElapsed =
                 breakSecondsDuration === 0 ? 61 : breakSecondsDuration + 1;
             rotationReductionRatio =
                 360 / (breakMinutesDuration * 60 + breakSecondsDuration);
-            rotationTimerDegree = 360;
-            ROOT.style.setProperty(
-                "--rotation-timer",
-                rotationTimerDegree + "deg"
-            );
-            ROOT.style.setProperty(
-                "--rotation-timer-color",
-                BREAK_ACTIVE_COLOR
-            );
-            if (audioEnabled) ALARM.play();
-            triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
-            notificationEmitter(
-                "Work cycle is ended",
-                "It's break time ! Take a rest."
-            );
-            if (secondsElapsed != 60) return;
+            cycleEnded();
         } else if (minutesElapsed === 0 && isInBreak) {
             TIMER_STATUS.textContent = "WORK";
             TIMER_STATUS.classList = "workActive";
-            isInBreak = false;
             minutesElapsed = workMinutesDuration;
             secondsElapsed =
                 workSecondsDuration === 0 ? 61 : workSecondsDuration + 1;
             rotationReductionRatio =
                 360 / (workMinutesDuration * 60 + workSecondsDuration);
-            rotationTimerDegree = 360;
-            ROOT.style.setProperty(
-                "--rotation-timer",
-                rotationTimerDegree + "deg"
-            );
-            ROOT.style.setProperty("--rotation-timer-color", WORK_ACTIVE_COLOR);
-            if (audioEnabled) ALARM.play();
-            triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
-            notificationEmitter(
-                "Break cycle is ended",
-                "It's work time ! Time to go back to your duties."
-            );
-            if (secondsElapsed != 60) return;
-        }
-        minutesElapsed--;
+            cycleEnded();
+        } else minutesElapsed--;
     }
 };
 
