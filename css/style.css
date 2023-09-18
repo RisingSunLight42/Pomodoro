@@ -104,9 +104,21 @@ html {
     justify-content: space-evenly;
     transition: background 4s ease;
     background: conic-gradient(
-        var(--rotation-timer-color) 0deg var(--rotation-timer),
-        white var(--rotation-timer) 360deg
+        var(--rotation-timer-color) var(--rotation-timer),
+        white 0
     );
+}
+
+@property --rotation-timer {
+    syntax: "<angle>";
+    initial-value: 360deg;
+    inherits: false;
+}
+
+@keyframes rotationTimerAnimation {
+    to {
+        --rotation-timer: 0deg;
+    }
 }
 
 h1 {

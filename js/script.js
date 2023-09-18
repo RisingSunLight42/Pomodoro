@@ -5,6 +5,7 @@ const TIMER_STATUS = document.getElementById("timerStatus");
 const WORKTIME_INPUT = document.getElementById("workTime");
 const BREAKTIME_INPUT = document.getElementById("breakTime");
 const AUDIO_INPUT = document.getElementById("audioInput");
+const TIMER_PANEL = document.getElementById("timerPanel");
 const TITLE = document.getElementsByTagName("title")[0];
 const ALARM = new Audio("./audio/alarm.mp3");
 const POP_UP_ERROR = document.getElementById("pop-up-error");
@@ -26,9 +27,7 @@ let workMinutesDuration = 25,
     audioEnabled = false,
     intervalId = 0,
     userClick = 0,
-    notificationEnabled = false,
-    rotationTimerDegree = 360,
-    rotationReductionRatio = 0;
+    notificationEnabled = false;
 
 if (
     typeof Notification !== "undefined" &&
@@ -90,11 +89,12 @@ const timerStart = () => {
         minutesElapsed,
         secondsElapsed
     )} | Pomodoro`;
-    rotationReductionRatio =
-        360 / (workMinutesDuration * 60 + workSecondsDuration);
-    rotationTimerDegree -= rotationReductionRatio;
-    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
-    rotationTimerDegree -= rotationReductionRatio;
+    triggerAnimation(
+        TIMER_PANEL,
+        `rotationTimerAnimation ${
+            workMinutesDuration * 60 + workSecondsDuration - 1
+        }s linear`
+    );
     return setInterval(countdown, 1000);
 };
 
@@ -107,10 +107,9 @@ const timerReset = (intervalId) => {
     minutesElapsed = workMinutesDuration;
     secondsElapsed = workSecondsDuration;
     isInBreak = false;
-    rotationTimerDegree = 360;
-    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
     ROOT.style.setProperty("--rotation-timer-color", WORK_ACTIVE_COLOR);
     TIMER_STATUS.textContent = "Waiting for the launch...";
+    triggerAnimation(TIMER_PANEL, "");
     TITLE.textContent = "Pomodoro";
     TIMER_STATUS.classList = "";
     clearInterval(intervalId);
@@ -118,7 +117,7 @@ const timerReset = (intervalId) => {
 };
 
 /**
- * Function to perform the dring animation on the display
+ * Function to perform an animation on the display
  */
 const triggerAnimation = (element, animation) => {
     // The first three lines are present to reset the animation state and reperform it
@@ -134,8 +133,6 @@ const triggerAnimation = (element, animation) => {
  */
 const cycleEnded = () => {
     isInBreak = !isInBreak;
-    rotationTimerDegree = 360;
-    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
     ROOT.style.setProperty(
         "--rotation-timer-color",
         isInBreak ? BREAK_ACTIVE_COLOR : WORK_ACTIVE_COLOR
@@ -155,8 +152,6 @@ const cycleEnded = () => {
  * Function used to manipulate the timer. It descreases seconds and minutes and handle the switch between work and break cycle.
  */
 const countdown = () => {
-    ROOT.style.setProperty("--rotation-timer", rotationTimerDegree + "deg");
-    rotationTimerDegree -= rotationReductionRatio;
     secondsElapsed--;
     TIMER_DISPLAY.textContent = timeFormatting(minutesElapsed, secondsElapsed);
     TITLE.textContent = `${TIMER_DISPLAY.textContent} | Pomodoro`;
@@ -168,8 +163,12 @@ const countdown = () => {
             minutesElapsed = breakMinutesDuration;
             secondsElapsed =
                 breakSecondsDuration === 0 ? 61 : breakSecondsDuration + 1;
-            rotationReductionRatio =
-                360 / (breakMinutesDuration * 60 + breakSecondsDuration);
+            triggerAnimation(
+                TIMER_PANEL,
+                `rotationTimerAnimation ${
+                    breakMinutesDuration * 60 + secondsElapsed
+                }s linear`
+            );
             cycleEnded();
         } else if (minutesElapsed === 0 && isInBreak) {
             TIMER_STATUS.textContent = "WORK";
@@ -177,8 +176,12 @@ const countdown = () => {
             minutesElapsed = workMinutesDuration;
             secondsElapsed =
                 workSecondsDuration === 0 ? 61 : workSecondsDuration + 1;
-            rotationReductionRatio =
-                360 / (workMinutesDuration * 60 + workSecondsDuration);
+            triggerAnimation(
+                TIMER_PANEL,
+                `rotationTimerAnimation ${
+                    workMinutesDuration * 60 + secondsElapsed
+                }s linear`
+            );
             cycleEnded();
         } else minutesElapsed--;
     }
