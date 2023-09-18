@@ -30,12 +30,12 @@ html {
     box-shadow: 5px 5px 5px rgba(51, 9, 99, 0.5);
 }
 
-#pop-up i {
+#pop-up em {
     margin: auto;
     margin-right: 8px;
 }
 
-#pop-up i::before {
+#pop-up em::before {
     display: flex;
     justify-content: center;
     align-items: center;
