@@ -39,3 +39,4 @@ If you want to contribute to the projet, please follow those standards :
 
 The favicon used in this project is from the fa-tomato of Fontawesome.
 You can find the colored version by following this [link](https://github.com/FortAwesome/Font-Awesome/issues/1183).
+Thanks to [Vireth](https://github.com/Vireth4114) for the help in the understanding of the `@property` element in CSS.
