@@ -7,7 +7,8 @@ const BREAKTIME_INPUT = document.getElementById("breakTime");
 const AUDIO_INPUT = document.getElementById("audioInput");
 const TITLE = document.getElementsByTagName("title")[0];
 const ALARM = new Audio("./audio/alarm.mp3");
-const POP_UP_ERROR = document.getElementById("pop-up");
+const POP_UP_ERROR = document.getElementById("pop-up-error");
+const POP_UP_INFO = document.getElementById("pop-up-info");
 const ROOT = document.documentElement;
 const WORK_ACTIVE_COLOR = getComputedStyle(ROOT).getPropertyValue(
     "--work-active-color"
@@ -147,7 +148,7 @@ const cycleEnded = () => {
             : ("Break cycle is ended",
               "It's work time ! Time to go back to your duties.")
     );
-    window.navigator.vibrate([50, 50, 50, 50]);
+    window.navigator.vibrate([250, 250, 250, 250]);
 };
 
 /**
@@ -259,6 +260,7 @@ const easterEgg = () => {
     BREAKTIME_INPUT.value = TIMER_DISPLAY.textContent;
     localStorage.setItem("workTimer", "42:42");
     localStorage.setItem("breakTimer", "42:42");
+    triggerAnimation(POP_UP_INFO, "popupAlert 5s ease");
 };
 
 /**

@@ -17,7 +17,7 @@ html {
 
 /** Pop-up part */
 
-#pop-up {
+.pop-up {
     width: 50%;
     min-height: 7%;
     max-width: 400px;
@@ -29,29 +29,35 @@ html {
     background-color: white;
     border: solid 1px var(--main-color);
     border-radius: 5px 3px 3px 5px;
-    border-left: solid 5px orange;
     transform: translateX(100%);
     box-shadow: 5px 5px 5px rgba(51, 9, 99, 0.5);
 }
 
-#pop-up em {
+.left-border-orange {
+    border-left: solid 5px orange;
+}
+.left-border-blue {
+    border-left: solid 5px rgb(0, 102, 255);
+}
+
+.pop-up em {
     margin: auto;
     margin-right: 8px;
 }
 
-#pop-up em::before {
+.pop-up em::before {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#pop-up h1 {
+.pop-up h1 {
     margin: 0;
     text-align: left;
     font-size: 1.5em;
 }
 
-#pop-up p {
+.pop-up p {
     margin: 0;
 }
 
