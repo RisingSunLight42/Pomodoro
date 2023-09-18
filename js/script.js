@@ -4,6 +4,7 @@ const TIMER_DISPLAY = document.getElementById("timerDisplay");
 const TIMER_STATUS = document.getElementById("timerStatus");
 const WORKTIME_INPUT = document.getElementById("workTime");
 const BREAKTIME_INPUT = document.getElementById("breakTime");
+const AUDIO_INPUT = document.getElementById("audioInput");
 const TITLE = document.getElementsByTagName("title")[0];
 const ALARM = new Audio("./audio/alarm.mp3");
 let workMinutesDuration = 25,
@@ -13,6 +14,7 @@ let workMinutesDuration = 25,
     minutesElapsed = workMinutesDuration,
     secondsElapsed = 0,
     isInBreak = false,
+    audioEnabled = false,
     intervalId = 0,
     userClick = 0;
 
@@ -85,7 +87,7 @@ const countdown = () => {
             minutesElapsed = breakMinutesDuration;
             secondsElapsed =
                 breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
-            ALARM.play();
+            if (audioEnabled) ALARM.play();
             if (secondsElapsed != 60) return;
         } else if (minutesElapsed === 0 && isInBreak) {
             TIMER_STATUS.textContent = "WORK";
@@ -94,7 +96,7 @@ const countdown = () => {
             minutesElapsed = workMinutesDuration;
             secondsElapsed =
                 workSecondsDuration === 0 ? 60 : workSecondsDuration;
-            ALARM.play();
+            if (audioEnabled) ALARM.play();
             if (secondsElapsed != 60) return;
         }
         minutesElapsed--;
@@ -162,7 +164,7 @@ const loadStorage = () => {
 };
 
 /**
- * Just a dumb function to enable 42:42 timers when you click 42 times on the play/stop button
+ * Just a dumb function to enable 42:42 timers when you click 42 times on the play/reset button
  */
 const easterEgg = () => {
     userClick++;
@@ -217,4 +219,8 @@ WORKTIME_INPUT.addEventListener("change", (event) =>
 );
 BREAKTIME_INPUT.addEventListener("change", (event) =>
     inputHandler(event, "break")
+);
+AUDIO_INPUT.addEventListener(
+    "change",
+    () => (audioEnabled = AUDIO_INPUT.checked)
 );

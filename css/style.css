@@ -1,5 +1,5 @@
 html {
-    background-color: rgba(106, 59, 161, 0.808);
+    background-color: rgba(106, 59, 161, 0.8);
 }
 
 .flexColumnDisplay {
@@ -46,6 +46,7 @@ h1 {
     text-align: center;
     font-size: 8em;
     margin: 25px;
+    user-select: none;
 }
 
 #timerButton::before {
