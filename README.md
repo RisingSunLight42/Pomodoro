@@ -16,7 +16,7 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 ### V2
 
 -   [x] 📝Add a way to custom the timer, for the workaholics !
--   [ ] ✨Add fancy animations
+-   [x] ✨Add fancy animations
 -   [x] :loud_sound:Play a sound when we switch from work to rest, and another one for rest to work.
 -   [x] :point_up_2:Add a custom pop-up
 -   [x] 🤫Add a special custom timer

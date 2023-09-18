@@ -72,6 +72,17 @@ const timerReset = (intervalId) => {
 };
 
 /**
+ * Function to perform the dring animation on the display
+ */
+const triggerDringAnimation = () => {
+    // The first three lines are present to reset the animation state and reperform it
+    TIMER_DISPLAY.style.animation = "none";
+    TIMER_DISPLAY.offsetHeight;
+    TIMER_DISPLAY.style.animation = null;
+    TIMER_DISPLAY.style.animation = "dring 0.1s ease 15";
+};
+
+/**
  * Function used to manipulate the timer. It descreases seconds and minutes and handle the switch between work and break cycle.
  */
 const countdown = () => {
@@ -88,6 +99,7 @@ const countdown = () => {
             secondsElapsed =
                 breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
             if (audioEnabled) ALARM.play();
+            triggerDringAnimation();
             if (secondsElapsed != 60) return;
         } else if (minutesElapsed === 0 && isInBreak) {
             TIMER_STATUS.textContent = "WORK";
@@ -97,6 +109,7 @@ const countdown = () => {
             secondsElapsed =
                 workSecondsDuration === 0 ? 60 : workSecondsDuration;
             if (audioEnabled) ALARM.play();
+            triggerDringAnimation();
             if (secondsElapsed != 60) return;
         }
         minutesElapsed--;
