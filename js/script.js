@@ -17,7 +17,17 @@ let workMinutesDuration = 25,
     isInBreak = false,
     audioEnabled = false,
     intervalId = 0,
-    userClick = 0;
+    userClick = 0,
+    notificationEnabled = false;
+
+if (
+    typeof Notification !== "undefined" &&
+    Notification.permission !== "granted"
+) {
+    Notification.requestPermission().then(
+        (permission) => (notificationEnabled = permission === "granted")
+    );
+}
 
 /**
  *  Function to format the numbers given into a proper time representation. Handle the case where the minutes given are higher than 59 to display hours.
@@ -31,6 +41,18 @@ const timeFormatting = (minutes, seconds) => {
     const MINUTES_FORMATTED = minutes < 10 ? `0${minutes}` : minutes;
     const SECONDS_FORMATTED = seconds < 10 ? `0${seconds}` : seconds;
     return `${HOURS_FORMATTED}${MINUTES_FORMATTED}:${SECONDS_FORMATTED}`;
+};
+
+const notificationEmitter = (title, body) => {
+    if (document.visibilityState === "visible" && !notificationEnabled) return;
+    const NOTIFICATION = new Notification(title, {
+        body,
+        icon: "./images/tomato.ico",
+    });
+    NOTIFICATION.onclick = function () {
+        window.parent.focus();
+        NOTIFICATION.close();
+    };
 };
 
 /**
@@ -101,6 +123,10 @@ const countdown = () => {
                 breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
             if (audioEnabled) ALARM.play();
             triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
+            notificationEmitter(
+                "Work cycle is ended",
+                "It's break time ! Take a rest."
+            );
             if (secondsElapsed != 60) return;
         } else if (minutesElapsed === 0 && isInBreak) {
             TIMER_STATUS.textContent = "WORK";
@@ -111,6 +137,10 @@ const countdown = () => {
                 workSecondsDuration === 0 ? 60 : workSecondsDuration;
             if (audioEnabled) ALARM.play();
             triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
+            notificationEmitter(
+                "Break cycle is ended",
+                "It's work time ! Time to go back to your duties."
+            );
             if (secondsElapsed != 60) return;
         }
         minutesElapsed--;
