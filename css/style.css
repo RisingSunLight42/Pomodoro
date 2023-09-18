@@ -22,7 +22,7 @@ html {
     min-height: 7%;
     max-width: 400px;
     z-index: 1000;
-    padding: 5px;
+    padding: 10px;
     position: fixed;
     right: 0;
     display: flex;
@@ -42,7 +42,7 @@ html {
 
 .pop-up em {
     margin: auto;
-    margin-right: 8px;
+    margin-right: 12px;
 }
 
 .pop-up em::before {
@@ -52,7 +52,7 @@ html {
 }
 
 .pop-up h1 {
-    margin: 0;
+    margin: 0 0 5px 0;
     text-align: left;
     font-size: 1.5em;
 }
