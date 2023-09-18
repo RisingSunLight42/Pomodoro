@@ -7,6 +7,63 @@ input {
     font-family: "Mulish";
 }
 
+html {
+    overflow-x: hidden;
+}
+
+/** Pop-up part */
+
+#pop-up {
+    width: 50%;
+    min-height: 7%;
+    max-width: 400px;
+    z-index: 1000;
+    padding: 5px;
+    position: fixed;
+    right: 0;
+    display: flex;
+    background-color: white;
+    border: solid 1px var(--main-color);
+    border-radius: 5px 3px 3px 5px;
+    border-left: solid 5px orange;
+    transform: translateX(100%);
+    box-shadow: 5px 5px 5px rgba(51, 9, 99, 0.5);
+}
+
+#pop-up i {
+    margin: auto;
+    margin-right: 8px;
+}
+
+#pop-up i::before {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#pop-up h1 {
+    margin: 0;
+    text-align: left;
+    font-size: 1.5em;
+}
+
+#pop-up p {
+    margin: 0;
+}
+
+@keyframes popupAlert {
+    0% {
+        transform: translateX(100%);
+    }
+    5%,
+    95% {
+        transform: translateX(-5%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 .flexColumnDisplay {
     height: 98vh;
     display: flex;
@@ -42,6 +99,8 @@ h1 {
     font-size: 3em;
     margin: 0 0 15px 0;
 }
+
+/** Timer part, with timer status and the display */
 
 #timerStatus {
     font-size: 1.5em;
@@ -101,6 +160,7 @@ h1 {
     display: inline-block;
     width: 10%;
     font-size: 2em;
+    user-select: none;
 }
 
 #inputSection div input {

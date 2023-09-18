@@ -7,6 +7,7 @@ const BREAKTIME_INPUT = document.getElementById("breakTime");
 const AUDIO_INPUT = document.getElementById("audioInput");
 const TITLE = document.getElementsByTagName("title")[0];
 const ALARM = new Audio("./audio/alarm.mp3");
+const POP_UP_ERROR = document.getElementById("pop-up");
 let workMinutesDuration = 25,
     workSecondsDuration = 0,
     breakMinutesDuration = 5,
@@ -74,12 +75,12 @@ const timerReset = (intervalId) => {
 /**
  * Function to perform the dring animation on the display
  */
-const triggerDringAnimation = () => {
+const triggerAnimation = (element, animation) => {
     // The first three lines are present to reset the animation state and reperform it
-    TIMER_DISPLAY.style.animation = "none";
-    TIMER_DISPLAY.offsetHeight;
-    TIMER_DISPLAY.style.animation = null;
-    TIMER_DISPLAY.style.animation = "dring 0.1s ease 15";
+    element.style.animation = "none";
+    element.offsetHeight;
+    element.style.animation = null;
+    element.style.animation = animation;
 };
 
 /**
@@ -99,7 +100,7 @@ const countdown = () => {
             secondsElapsed =
                 breakSecondsDuration === 0 ? 60 : breakSecondsDuration;
             if (audioEnabled) ALARM.play();
-            triggerDringAnimation();
+            triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
             if (secondsElapsed != 60) return;
         } else if (minutesElapsed === 0 && isInBreak) {
             TIMER_STATUS.textContent = "WORK";
@@ -109,7 +110,7 @@ const countdown = () => {
             secondsElapsed =
                 workSecondsDuration === 0 ? 60 : workSecondsDuration;
             if (audioEnabled) ALARM.play();
-            triggerDringAnimation();
+            triggerAnimation(TIMER_DISPLAY, "dring 0.1s ease 15");
             if (secondsElapsed != 60) return;
         }
         minutesElapsed--;
@@ -128,10 +129,7 @@ const invalidInputHandler = (event, inputType) => {
             ? timeFormatting(workMinutesDuration, workSecondsDuration)
             : timeFormatting(breakMinutesDuration, breakSecondsDuration);
     TARGER.value = CORRECTED_FORMAT;
-    TARGER.setCustomValidity(
-        "Le format ou la valeur entrée est incorrect ! La durée entrée doit se situer entre 00:01 et 60:00 et respecter le format MM:SS."
-    );
-    TARGER.reportValidity();
+    triggerAnimation(POP_UP_ERROR, "popupAlert 5s ease");
 };
 
 /**
