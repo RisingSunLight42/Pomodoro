@@ -147,6 +147,7 @@ const cycleEnded = () => {
             : ("Break cycle is ended",
               "It's work time ! Time to go back to your duties.")
     );
+    window.navigator.vibrate([50, 50, 50, 50]);
 };
 
 /**
