@@ -164,6 +164,10 @@ h1 {
     }
 }
 
+#timerButton:hover {
+    cursor: pointer;
+}
+
 #timerButton::before {
     display: flex;
     justify-content: center;
