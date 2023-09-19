@@ -27,7 +27,8 @@ let workMinutesDuration = 25,
     audioEnabled = false,
     intervalId = 0,
     userClick = 0,
-    notificationEnabled = false;
+    notificationEnabled = false,
+    isTimerRunning = false;
 
 if (
     typeof Notification !== "undefined" &&
@@ -95,6 +96,7 @@ const timerStart = () => {
             workMinutesDuration * 60 + workSecondsDuration - 1
         }s linear`
     );
+    isTimerRunning = !isTimerRunning;
     return setInterval(countdown, 1000);
 };
 
@@ -112,6 +114,7 @@ const timerReset = (intervalId) => {
     triggerAnimation(TIMER_PANEL, "");
     TITLE.textContent = "Pomodoro";
     TIMER_STATUS.classList = "";
+    isTimerRunning = !isTimerRunning;
     clearInterval(intervalId);
     return 0;
 };
@@ -217,10 +220,11 @@ const inputHandler = (event, inputType) => {
         localStorage.setItem("workTimer", INPUT);
         [workMinutesDuration, workSecondsDuration] =
             INPUT.split(":").map(Number);
-        TIMER_DISPLAY.textContent = timeFormatting(
-            workMinutesDuration,
-            workSecondsDuration
-        );
+        if (!isTimerRunning)
+            TIMER_DISPLAY.textContent = timeFormatting(
+                workMinutesDuration,
+                workSecondsDuration
+            );
     } else {
         localStorage.setItem("breakTimer", INPUT);
         [breakMinutesDuration, breakSecondsDuration] =
