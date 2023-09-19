@@ -27,7 +27,7 @@ At that time, the V1 is officially done ! We're currently working on V2, check o
 -   [x] ⌛Add animation cycle when timer countdown
 -   [x] 📳Add vibration on mobile
 -   [x] 🎇Add a new pop-up for the custom timer
--   [ ] ☯️Add dark mode
+-   [x] ☯️Add dark mode
 
 ## Agreements on contributing
 
