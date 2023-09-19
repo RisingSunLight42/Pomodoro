@@ -10,12 +10,19 @@ const TITLE = document.getElementsByTagName("title")[0];
 const ALARM = new Audio("./audio/alarm.mp3");
 const POP_UP_ERROR = document.getElementById("pop-up-error");
 const POP_UP_INFO = document.getElementById("pop-up-info");
+const SWITCH_THEME = document.getElementById("switchTheme");
 const ROOT = document.documentElement;
 const WORK_ACTIVE_COLOR = getComputedStyle(ROOT).getPropertyValue(
     "--work-active-color"
 );
 const BREAK_ACTIVE_COLOR = getComputedStyle(ROOT).getPropertyValue(
     "--break-active-color"
+);
+const MAIN_WHITE_THEME_COLOR = getComputedStyle(ROOT).getPropertyValue(
+    "--main-color-whitetheme"
+);
+const MAIN_BLACK_THEME_COLOR = getComputedStyle(ROOT).getPropertyValue(
+    "--main-color-blacktheme"
 );
 let workMinutesDuration = 25,
     workSecondsDuration = 0,
@@ -28,7 +35,8 @@ let workMinutesDuration = 25,
     intervalId = 0,
     userClick = 0,
     notificationEnabled = false,
-    isTimerRunning = false;
+    isTimerRunning = false,
+    isDarkMode = false;
 
 if (
     typeof Notification !== "undefined" &&
@@ -271,6 +279,26 @@ const easterEgg = () => {
 };
 
 /**
+ * Function to switch between dark and light mode
+ */
+const switchTheme = () => {
+    isDarkMode = !isDarkMode;
+    console.log(isDarkMode);
+    localStorage.setItem("isDarkMode", isDarkMode);
+    if (isDarkMode) {
+        ROOT.style.setProperty("--main-color", MAIN_BLACK_THEME_COLOR);
+        ROOT.style.setProperty("--font-color", "white");
+        ROOT.style.setProperty("--background-color", "#272d35");
+    } else {
+        ROOT.style.setProperty("--main-color", MAIN_WHITE_THEME_COLOR);
+        ROOT.style.setProperty("--font-color", "black");
+        ROOT.style.setProperty("--background-color", "white");
+    }
+    SWITCH_THEME.classList.toggle("fa-moon");
+    SWITCH_THEME.classList.toggle("fa-sun");
+};
+
+/**
  * Function used to display default value for the user in the timer display and in the inputs.
  * The values displayed may be not the defaults ones if the user already personnalized their timers.
  */
@@ -285,6 +313,11 @@ window.onload = () => {
         breakMinutesDuration,
         breakSecondsDuration
     );
+    if (Boolean(localStorage.getItem("isDarkMode"))) {
+        SWITCH_THEME.classList.toggle("fa-moon");
+        SWITCH_THEME.classList.toggle("fa-sun");
+        isDarkMode = !isDarkMode;
+    }
 };
 
 PLAY_PAUSE_BUTTON.addEventListener("click", () => {
@@ -310,3 +343,5 @@ AUDIO_INPUT.addEventListener(
     "change",
     () => (audioEnabled = AUDIO_INPUT.checked)
 );
+
+SWITCH_THEME.addEventListener("click", switchTheme);

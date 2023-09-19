@@ -1,14 +1,20 @@
 :root {
-    --main-color: rgb(51, 9, 99);
+    --main-color-whitetheme: rgb(51, 9, 99);
+    --main-color-darktheme: rgb(107, 33, 192);
     --rotation-timer: 360deg;
     --work-active-color: rgb(187, 76, 76);
     --break-active-color: rgb(104, 165, 69);
     --rotation-timer-color: var(--work-active-color);
+    --background-color: #272d35;
+    --font-color: white;
+    --main-color: var(--main-color-whitetheme);
 }
 
 body,
 input {
     font-family: "Mulish";
+    color: var(--font-color);
+    background-color: var(--background-color);
 }
 
 html {
@@ -26,7 +32,8 @@ html {
     position: fixed;
     right: 0;
     display: flex;
-    background-color: white;
+    background-color: var(--background-color);
+    color: var(--font-color);
     border: solid 1px var(--main-color);
     border-radius: 5px 3px 3px 5px;
     transform: translateX(100%);
@@ -105,7 +112,7 @@ html {
     transition: background 4s ease;
     background: conic-gradient(
         var(--rotation-timer-color) var(--rotation-timer),
-        white 0
+        var(--background-color) 0
     );
 }
 
@@ -199,10 +206,21 @@ h1 {
     width: 20%;
     height: 5vh;
     border-radius: 50px 50px 50px 50px;
-    border-width: 1px;
+    border-width: 2px;
+    border-style: solid;
     border-color: var(--main-color);
     text-align: center;
     font-size: 1.5em;
+}
+
+#switchTheme {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    z-index: 900;
+}
+#switchTheme:hover {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1024px) {
