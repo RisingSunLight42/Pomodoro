@@ -254,6 +254,7 @@ const loadStorage = () => {
     if (BREAK_TIMER)
         [breakMinutesDuration, breakSecondsDuration] =
             BREAK_TIMER.split(":").map(Number);
+    isDarkMode = localStorage.getItem("isDarkMode") === "true";
 };
 
 /**
@@ -282,8 +283,6 @@ const easterEgg = () => {
  * Function to switch between dark and light mode
  */
 const switchTheme = () => {
-    isDarkMode = !isDarkMode;
-    console.log(isDarkMode);
     localStorage.setItem("isDarkMode", isDarkMode);
     if (isDarkMode) {
         ROOT.style.setProperty("--main-color", MAIN_BLACK_THEME_COLOR);
@@ -313,11 +312,7 @@ window.onload = () => {
         breakMinutesDuration,
         breakSecondsDuration
     );
-    if (Boolean(localStorage.getItem("isDarkMode"))) {
-        SWITCH_THEME.classList.toggle("fa-moon");
-        SWITCH_THEME.classList.toggle("fa-sun");
-        isDarkMode = !isDarkMode;
-    }
+    switchTheme();
 };
 
 PLAY_PAUSE_BUTTON.addEventListener("click", () => {
@@ -344,4 +339,7 @@ AUDIO_INPUT.addEventListener(
     () => (audioEnabled = AUDIO_INPUT.checked)
 );
 
-SWITCH_THEME.addEventListener("click", switchTheme);
+SWITCH_THEME.addEventListener("click", () => {
+    isDarkMode = !isDarkMode;
+    switchTheme();
+});
