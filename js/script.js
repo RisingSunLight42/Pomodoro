@@ -288,13 +288,15 @@ const switchTheme = () => {
         ROOT.style.setProperty("--main-color", MAIN_BLACK_THEME_COLOR);
         ROOT.style.setProperty("--font-color", "white");
         ROOT.style.setProperty("--background-color", "#272d35");
+        SWITCH_THEME.classList.remove("fa-moon");
+        SWITCH_THEME.classList.add("fa-sun");
     } else {
         ROOT.style.setProperty("--main-color", MAIN_WHITE_THEME_COLOR);
         ROOT.style.setProperty("--font-color", "black");
         ROOT.style.setProperty("--background-color", "white");
+        SWITCH_THEME.classList.add("fa-moon");
+        SWITCH_THEME.classList.remove("fa-sun");
     }
-    SWITCH_THEME.classList.toggle("fa-moon");
-    SWITCH_THEME.classList.toggle("fa-sun");
 };
 
 /**
